@@ -2,7 +2,11 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.rou
+
+@app.route('/books', methods=['GET'])
+def get_book():
+    pass
+
 
 @app.route('/')
 def hello_world():
