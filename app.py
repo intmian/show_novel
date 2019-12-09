@@ -1,12 +1,62 @@
-from flask import Flask
+import base64
+
+from flask import Flask, send_file
+from models.novels import novel
+from flask import request, jsonify
+from json import dumps
 
 app = Flask(__name__)
 
 
-@app.route('/books', methods=['GET'])
+@app.route('/novels', methods=['GET'])
 def get_book():
-    pass
+    args = request.args or None
+    if not args:
+        return jsonify(novel.novels)
+    if "left" not in args or "right" not in args:
+        return jsonify([]), 400
+    left, right = int(args["left"]), int(args["right"])
+    l = len(novel.novels)
+    if right > l or left < 0:
+        return jsonify([]), 406
+    return jsonify(novel.novels[left:right + 1])
 
+
+@app.route('/novel/<name>', methods=['GET'])
+def get_novel(name):
+    if name not in novel.novels:
+        return jsonify(None), 404
+    else:
+        n = novel.get_novel(name)
+        cover: bytes = base64.b64encode(n.cover)
+        return jsonify({
+            "describe": n.describe,
+            "cover": cover.decode(),
+            "books": dumps(n.books)
+        })
+
+
+@app.route('/novel/<name>/<book>', methods=['GET'])
+def book_download(name, book):
+    if name not in novel.novels:
+        return jsonify(None), 404
+    else:
+        n = novel.get_novel("name")
+        if book not in n.books:
+            return jsonify(None), 404
+        else:
+            return send_file("static\\novels\\%s\\%s\\%s" % (name, name, book),
+                             as_attachment=True)
+
+
+@app.route('/novels/num', methods=['GET'])
+def get_book_name():
+    return jsonify(len(novel.novels))
+
+
+@app.route('/novels/search/<name>', methods=['GET'])
+def search(name):
+    
 
 @app.route('/')
 def hello_world():
