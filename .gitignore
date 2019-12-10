@@ -1,3 +1,4 @@
 .idea
 .git
 static/novels
+*.pyc
