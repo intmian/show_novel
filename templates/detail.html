@@ -10,20 +10,14 @@
     <script src="http://www.iamtxt.com/js/jquery-1.11.3.min.js"></script>
 <body>
 <nav class="navbar navbar-inverse">
+    <a href="/">
     <div class="container f12">
         <img src="/static/pic/logo.png">
-        <a href="" style="font-family: verdana,Arial,Helvetica,sans-serif;
-line-height: 1.8em;
-font-size: 17pt;
-text-indent: 30px;
-margin: 0;
-padding: 0;
-text-decoration: none;
-color: #fff;">mian's 轻小说站</a>
     </div>
+    </a>
 </nav>
 <div class="container">
-    <form class="navbar-form navbar searchbar" action="/e/search/index.php" method="post" role="search">
+    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
         <div class="form-group input-group">
             <input type="hidden" name="tempid" value="2">
             <input type="hidden" name="show" value="title,softwriter">
@@ -171,7 +165,7 @@ color: #fff;">mian's 轻小说站</a>
         }
     });
     $.get("/api/novels/popular",function (j) {
-        let tpl = `<li><a href="/novel/{0}" style = "font-family: Monospace;" target="_blank">{1}</a></li>`;
+        let tpl = `<li><a href="/novel/{0}" style = "font-family: Monospace;font-weight:bold;" target="_blank">{1}</a></li>`;
         for(n in j) {
             let name = "";
             let max = 20;
