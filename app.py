@@ -1,4 +1,5 @@
 import base64
+from random import sample
 
 from flask import Flask, send_file
 from models.novels import novel
@@ -28,10 +29,9 @@ def get_novel(name):
         return jsonify(None), 404
     else:
         n = novel.get_novel(name)
-        cover: bytes = base64.b64encode(n.cover)
         return jsonify({
-            "describe": n.describe,
-            "cover": cover.decode(),
+            "describe": n.describe.split("\n"),
+            "cover": n.cover,
             "books": n.books
         })
 
@@ -74,6 +74,20 @@ def rank():
 @app.route('/')
 def hello_world():
     return 'Hello World!'
+
+
+@app.route('/api/novels/recommend')
+def novel_recommend():
+    ns = sample(novel.novels, 4)
+    re = []
+    for n in ns:
+        re.append((n, novel.get_novel(n).cover))
+    return jsonify(re)
+
+
+@app.route('/debug/novel')
+def novel_debug():
+    return send_file("static\\html\\detail_debug.html")
 
 
 if __name__ == '__main__':

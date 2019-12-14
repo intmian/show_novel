@@ -16,8 +16,7 @@ class Novel:
         self.__base = base + name
         with open(self.__base + "\\书籍信息.txt", "r") as fp:
             self.describe = fp.read()
-        with open(self.__base + "\\封面.jpg", "rb") as fp:
-            self.cover = fp.read()
+        self.cover = self.__base + "\\封面.jpg"
         addr = self.__base + "\\" + name
         self.books = listdir(addr)
 
