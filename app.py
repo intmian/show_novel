@@ -2,7 +2,7 @@ import base64
 from random import sample
 
 from flask import Flask, send_file, render_template
-from models.novels import novel
+from modules.novels import novel
 from flask import request, jsonify
 from json import dumps
 

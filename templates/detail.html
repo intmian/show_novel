@@ -11,9 +11,9 @@
 <body>
 <nav class="navbar navbar-inverse">
     <a href="/">
-    <div class="container f12">
-        <img src="/static/pic/logo.png">
-    </div>
+        <div class="container f12">
+            <img src="/static/pic/logo.png">
+        </div>
     </a>
 </nav>
 <div class="container">
@@ -23,10 +23,14 @@
             <input type="hidden" name="show" value="title,softwriter">
             <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
             <span class="input-group-btn">
-	<button class="btn btn-default" type="submit">搜书</button>
-	</span>
+            <button class="btn btn-default" type="submit">搜书</button>
+            </span>
         </div>
-        <div><a href="http://www.iamtxt.com/hotbook/week.html" class="searchlinks">排行榜</a></div>
+
+        <div>
+            <a href="/" class="searchlinks">书库</a>
+            <a href="/rank" class="searchlinks">排行榜</a>
+        </div>
     </form>
     <hr>
 </div>
@@ -164,9 +168,9 @@
             $("#well").append(tpl.format("\\" + j[n][1], j[n][0], name))
         }
     });
-    $.get("/api/novels/popular",function (j) {
+    $.get("/api/novels/popular", function (j) {
         let tpl = `<li><a href="/novel/{0}" style = "font-family: Monospace;font-weight:bold;" target="_blank">{1}</a></li>`;
-        for(n in j) {
+        for (n in j) {
             let name = "";
             let max = 20;
             if (jmz.GetLength(j[n][0]) > max) {
@@ -179,7 +183,7 @@
             } else {
                 name = j[n][0];
             }
-            $("#popu").append(tpl.format(j[n][0],name));
+            $("#popu").append(tpl.format(j[n][0], name));
 
         }
     })
