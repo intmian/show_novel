@@ -3,7 +3,7 @@ AUTHOR:   MIAN
 DATE:     2019/12/5
 DESCRIBE: 对小说文件夹的一些操作
 """
-from sortedcontainers import SortedDict
+from sortedcontainers import SortedList
 from typing import *
 from os import listdir, path
 
@@ -32,10 +32,10 @@ class Novels:
     def __init__(self):
         self.__base = base
         self.novels = listdir(self.__base)
-        self.__rank = SortedDict()  # 红黑树
+        self.__rank = SortedList(key = lambda t: -t[1])  # 红黑树
 
         for no in self.novels:
-            self.__rank[no] = 0
+            self.__rank.add([no,0])
 
     def novel_valid(self, name) -> bool:
         return name in self.novels
@@ -47,16 +47,17 @@ class Novels:
             return Novel(name)
 
     def add_rank(self, novel_):
-        n = self.__rank[novel_]
-        n += 1
-        self.__rank.pop(novel_)
-        self.__rank[novel_] = n
+        for i in range(len(self.__rank)):
+            if self.__rank[i][0] == novel_:
+                n = self.__rank[i][1] + 1
+                self.__rank.pop(i)
+                self.__rank.add([novel_,n])
 
     def novels_popular(self):
-        return list(self.__rank.items())[0:16]
+        return self.__rank[0:16]
 
     def novels_rank(self):
-        return list(self.__rank.items())
+        return list(self.__rank)
 
 
 novel = Novels()
