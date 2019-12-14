@@ -3,6 +3,7 @@ AUTHOR:   MIAN
 DATE:     2019/12/5
 DESCRIBE: 对小说文件夹的一些操作
 """
+from collections import OrderedDict
 from typing import *
 from os import listdir, path
 
@@ -32,15 +33,26 @@ class Novels:
     def __init__(self):
         self.__base = base
         self.novels = listdir(self.__base)
+        self.__rank = OrderedDict()  # 红黑树
+
+        for no in self.novels:
+            self.__rank[no] = 0
 
     def novel_valid(self, name) -> bool:
         return name in self.novels
 
     def get_novel(self, name) -> Novel or None:
+        self.add_rank(name)
         if name not in self.novels:
             return None
         else:
             return Novel(name)
+
+    def add_rank(self, novel_):
+        self.__rank[novel_] += 1
+
+    def novels_popular(self):
+        return list(self.__rank.items())[0:10]
 
 
 novel = Novels()

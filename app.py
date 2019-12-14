@@ -66,6 +66,11 @@ def search(name):
     return jsonify(re)
 
 
+@app.route('/api/novels/popular', methods=['GET'])
+def rank():
+    return jsonify(novel.novels_popular())
+
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
