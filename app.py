@@ -1,7 +1,7 @@
 import base64
 from random import sample
 
-from flask import Flask, send_file
+from flask import Flask, send_file, render_template
 from models.novels import novel
 from flask import request, jsonify
 from json import dumps
@@ -67,8 +67,13 @@ def search(name):
 
 
 @app.route('/api/novels/popular', methods=['GET'])
-def rank():
+def popu():
     return jsonify(novel.novels_popular())
+
+
+@app.route('/api/novels/rank', methods=['GET'])
+def rank():
+    return jsonify(novel.novels_rank())
 
 
 @app.route('/')
@@ -85,9 +90,15 @@ def novel_recommend():
     return jsonify(re)
 
 
-@app.route('/debug/novel')
-def novel_debug():
-    return send_file("static\\html\\detail_debug.html")
+@app.route('/novel/<novel_>', methods=['GET'])
+def show_detail(novel_):
+    novel.add_rank(novel_)
+    return render_template('detail.html', novel=novel_)
+
+
+# @app.route('/debug/novel')
+# def novel_debug():
+#     return send_file("static\\html\\detail_debug.html")
 
 
 if __name__ == '__main__':

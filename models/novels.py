@@ -41,17 +41,22 @@ class Novels:
         return name in self.novels
 
     def get_novel(self, name) -> Novel or None:
-        self.add_rank(name)
         if name not in self.novels:
             return None
         else:
             return Novel(name)
 
     def add_rank(self, novel_):
-        self.__rank[novel_] += 1
+        n = self.__rank[novel_]
+        n += 1
+        self.__rank.pop(novel_)
+        self.__rank[novel_] = n
 
     def novels_popular(self):
-        return list(self.__rank.items())[0:10]
+        return list(self.__rank.items().__reversed__())[0:10]
+
+    def novels_rank(self):
+        return list(self.__rank.items().__reversed__())
 
 
 novel = Novels()
