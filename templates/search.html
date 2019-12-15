@@ -66,7 +66,6 @@
                 <hr>
 
 
-
             </div>
             <hr>
         </div>
@@ -112,7 +111,7 @@
     };
 </script>
 <script>
-    const search_t = "1";
+    const search_t = "{{ word }}";
     tpl = `<div class="sResult">
                     <div class="title"><a href="/novel/{0}}" class="nLink"><strong>{0}</strong></a>
                         <span>匹配度：{1}</span></div>
@@ -126,7 +125,7 @@
                     </div>
                     <div class="hr"></div>
                 </div>`;
-    $.get("/api/novels/search/"+search_t,function (novels_rate) {
+    $.get("/api/novels/search/" + search_t, function (novels_rate) {
         if (novels_rate.length === 0) {
             $("#novels").append(`<div class="sResult">
                     <div class="title"><strong>无匹配结果</strong>
@@ -137,9 +136,9 @@
             $.ajaxSettings.async = false;
             let no_name = novels_rate[i][0];
             let ra = novels_rate[i][1];
-            $.get("/api/novel/" +no_name,function (no) {
+            $.get("/api/novel/" + no_name, function (no) {
                 let des = no["describe"];
-                $("#novels").append(tpl.format(no_name,ra,des[1],des[2],des[3],des[4]))
+                $("#novels").append(tpl.format(no_name, ra, des[1], des[2], des[3], des[4]))
             });
             $.ajaxSettings.async = true;
         }

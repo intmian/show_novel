@@ -82,11 +82,6 @@ def rank():
     return jsonify(novel.novels_rank())
 
 
-@app.route('/')
-def hello_world():
-    return render_template('index.html')
-
-
 @app.route('/api/novels/recommend')
 def novel_recommend():
     ns = sample(novel.novels, 4)
@@ -96,10 +91,20 @@ def novel_recommend():
     return jsonify(re)
 
 
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
+
+
 @app.route('/novel/<novel_>', methods=['GET'])
 def show_detail(novel_):
     novel.add_rank(novel_)
     return render_template('detail.html', novel=novel_)
+
+
+@app.route('/search/<word>', methods=['GET'])
+def search_novel(word):
+    return render_template('search.html', word=word)
 
 
 # @app.route('/debug/novel')
@@ -112,6 +117,7 @@ def show_detail(novel_):
 @app.route('/debug/search')
 def novel_debug():
     return send_file("static\\html\\search_debug.html")
+
 
 if __name__ == '__main__':
     app.run()

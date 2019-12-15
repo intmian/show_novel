@@ -35,7 +35,7 @@
             <input type="hidden" name="show" value="title,softwriter">
             <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
             <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">搜书</button>
+            <button class="btn btn-default" type="submit" onclick="search()">搜书</button>
             </span>
         </div>
 
@@ -143,6 +143,10 @@
         }
         return realLength;
     };
+
+    function search() {
+        open("/search/" + $("#str").text());
+    }
 
 
     novel = "{{ novel }}";
