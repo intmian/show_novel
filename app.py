@@ -28,6 +28,12 @@ def get_novel(name):
     if name not in novel.novels:
         return jsonify(None), 404
     else:
+        args = request.args or None
+        if args:
+            if "mode" in args:
+                if args["mode"] == "cover":
+                    n = novel.get_novel(name)
+                    return n.cover
         n = novel.get_novel(name)
         return jsonify({
             "describe": n.describe.split("\n"),
