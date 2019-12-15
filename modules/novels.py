@@ -57,7 +57,7 @@ class Novels:
         return self.__rank[0:16]
 
     def novels_rank(self):
-        return list(self.__rank)
+        return list(self.__rank)[0:100]
 
 
 novel = Novels()
