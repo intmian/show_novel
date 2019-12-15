@@ -11,31 +11,29 @@
     <script src="http://www.iamtxt.comjs/jquery.cookie.js"></script>
 <body>
 <nav class="navbar navbar-inverse">
-    <div class="container f12">
-        <img src="logo.png">
-        <a href="" style="font-family: verdana,Arial,Helvetica,sans-serif;
-line-height: 1.8em;
-font-size: 17pt;
-text-indent: 30px;
-margin: 0;
-padding: 0;
-text-decoration: none;
-color: #fff;">mian's 轻小说站</a>
-    </div>
+    <a href="/">
+        <div class="container f12">
+            <img src="/static/pic/logo.png">
+        </div>
+    </a>
 </nav>
 <div class="container">
-    <form class="navbar-form navbar searchbar" action="/e/search/index.php" method="post" role="search">
+    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
         <div class="form-group input-group">
             <input type="hidden" name="tempid" value="2">
             <input type="hidden" name="show" value="title,softwriter">
             <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
             <span class="input-group-btn">
-	<button class="btn btn-default" type="submit">搜书</button>
-	</span>
+            <button class="btn btn-default" type="submit">搜书</button>
+            </span>
         </div>
-        <div><a href="http://www.iamtxt.com/hotbook/week.html" class="searchlinks">排行榜</a></div>
-    </form>
 
+        <div>
+            <a href="/" class="searchlinks">书库</a>
+            <a href="/rank" class="searchlinks">排行榜</a>
+        </div>
+    </form>
+    <hr>
 </div>
 <div class="container">
     <div class="row">

@@ -8,7 +8,6 @@
     <link href="http://www.iamtxt.com/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://www.iamtxt.com//css/common.css" rel="stylesheet">
     <script src="http://www.iamtxt.com/js/jquery-1.11.3.min.js"></script>
-    <script src="http://www.iamtxt.comjs/jquery.cookie.js"></script>
     <style type="text/css">
         .pg a, .pg strong, .pgb a, .pg label {
             float: left;
@@ -28,33 +27,29 @@
 </head>
 <body>
 <nav class="navbar navbar-inverse">
-    <div class="container f12">
-        <img src="logo.png">
-        <a href="" style="font-family: verdana,Arial,Helvetica,sans-serif;
-line-height: 1.8em;
-font-size: 17pt;
-text-indent: 30px;
-margin: 0;
-padding: 0;
-text-decoration: none;
-color: #fff;">mian's 轻小说站</a>
-    </div>
+    <a href="/">
+        <div class="container f12">
+            <img src="/static/pic/logo.png">
+        </div>
+    </a>
 </nav>
 <div class="container">
-    <form class="navbar-form navbar searchbar" action="http://www.iamtxt.com/e/search/index.php" method="post"
-          role="search">
+    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
         <div class="form-group input-group">
             <input type="hidden" name="tempid" value="2">
             <input type="hidden" name="show" value="title,softwriter">
             <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
             <span class="input-group-btn">
-	<button class="btn btn-default" type="submit">搜书</button>
-	</span>
+            <button class="btn btn-default" type="submit">搜书</button>
+            </span>
         </div>
-        <div>
-            <a href="http://www.iamtxt.com/hotbook/week.html" class="searchlinks">排行榜</a></div>
-    </form>
 
+        <div>
+            <a href="/" class="searchlinks">书库</a>
+            <a href="/rank" class="searchlinks">排行榜</a>
+        </div>
+    </form>
+    <hr>
 </div>
 <div class="container">
     <div class="row">
@@ -291,22 +286,24 @@ color: #fff;">mian's 轻小说站</a>
             <div class="row">
                 <div class="well"><strong>热门电子书：</strong>
                     <hr>
-                    <ul>
-                        <li><a href="http://www.iamtxt.com/ebook/18683.html" target="_blank">庆余年</a></li>
-                        <li><a href="http://www.iamtxt.com/ebook/33159.html" target="_blank">思想之镜</a></li>
-                        <li><a href="http://www.iamtxt.com/ebook/33164.html" target="_blank">欧洲与没有历史的人</a></li>
-                        <li><a href="http://www.iamtxt.com/ebook/33181.html" target="_blank">自我边界</a></li>
-                        <li><a href="http://www.iamtxt.com/ebook/33154.html" target="_blank">欢愉</a></li>
+                    <ul id="popu">
                     </ul>
                 </div>
+                <div class="well text-center">
+                    <strong>
+                        <p>免责声明：<br>仅供验收，请勿用于其它用途</p>
+                    </strong>
+                </div>
             </div>
+
         </div>
+
     </div>
     <hr>
 </div>
 <div class="container">
     <div class="row">
-        <div class="text-justify col-xs-12 col-sm-9">
+        <div class="text-center">
             <div class="pg">
                 <strong>1</strong><a href="forum-96-2.html">2</a><a href="forum-96-3.html">3</a><a
                     href="forum-96-4.html">4</a><a href="forum-96-5.html">5</a><a href="forum-96-6.html">6</a><a
@@ -329,6 +326,53 @@ color: #fff;">mian's 轻小说站</a>
         <p>power by mian，所有权利不保留</p>
     </div>
 </div>
+<script>
+    String.prototype.format = function () {
+        var values = arguments;
+        return this.replace(/\{(\d+)\}/g, function (match, index) {
+            if (values.length > index) {
+                return values[index];
+            } else {
+                return "";
+            }
+        });
+    };
 
+    var jmz = {};
+    jmz.GetLength = function (str) {
+        ///<summary>获得字符串实际长度，中文2，英文1</summary>
+        ///<param name="str">要获得长度的字符串</param>
+        var realLength = 0, len = str.length, charCode = -1;
+        for (var i = 0; i < len; i++) {
+            charCode = str.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128)
+                realLength += 1;
+            else
+                realLength += 2;
+        }
+        return realLength;
+    };
+
+
+    $.get("/api/novels/popular", function (j) { // 加载热门书库
+        let tpl = `<li><a href="/novel/{0}" style = "font-family: Monospace;font-weight:bold;" target="_blank">{1}</a></li>`;
+        for (n in j) {
+            let name = "";
+            let max = 20;
+            if (jmz.GetLength(j[n][0]) > max) {
+                for (var i = 0; i < max + 10; i++) {
+                    if (jmz.GetLength(j[n][0].slice(0, i) + "...") >= max) {
+                        name = j[n][0].slice(0, i) + "...";
+                        break;
+                    }
+                }
+            } else {
+                name = j[n][0];
+            }
+            $("#popu").append(tpl.format(j[n][0], name));
+
+        }
+    })
+</script>
 </body>
 </html>
