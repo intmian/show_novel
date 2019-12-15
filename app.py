@@ -84,7 +84,7 @@ def rank():
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return render_template('index.html')
 
 
 @app.route('/api/novels/recommend')
@@ -106,10 +106,12 @@ def show_detail(novel_):
 # def novel_debug():
 #     return send_file("static\\html\\detail_debug.html")
 
-@app.route('/debug/novels')
+# @app.route('/debug/novels')
+# def novel_debug():
+#     return send_file("static\\html\\index_debug.html")
+@app.route('/debug/search')
 def novel_debug():
-    return send_file("static\\html\\index_debug.html")
-
+    return send_file("static\\html\\search_debug.html")
 
 if __name__ == '__main__':
     app.run()

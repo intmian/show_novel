@@ -1,0 +1,148 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mian's 轻小说站</title>
+    <meta name="description" content="mian's 轻小说站">
+    <link href="http://www.iamtxt.com/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://www.iamtxt.com//css/common.css" rel="stylesheet">
+    <script src="http://www.iamtxt.com/js/jquery-1.11.3.min.js"></script>
+    <style type="text/css">
+        .pg a, .pg strong, .pgb a, .pg label {
+            float: left;
+            display: inline;
+            margin-left: 4px;
+            padding: 0 8px;
+            height: 26px;
+            border: 1px solid;
+            border-color: #C2D5E3;
+            background-color: #FFF;
+            background-repeat: no-repeat;
+            color: #333;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .newa {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis; /** 超出宽度显示为......**/
+            white-space: nowrap; /* 不换行 */
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <a href="/">
+        <div class="container f12">
+            <img src="/static/pic/logo.png">
+        </div>
+    </a>
+</nav>
+<div class="container">
+    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
+        <div class="form-group input-group">
+            <input type="hidden" name="tempid" value="2">
+            <input type="hidden" name="show" value="title,softwriter">
+            <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">搜书</button>
+            </span>
+        </div>
+
+        <div>
+            <a href="/" class="searchlinks">书库</a>
+            <a href="/rank" class="searchlinks">排行榜</a>
+        </div>
+    </form>
+    <hr>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="container">
+            <div class="text-justify col-xs-12 col-sm-9" id="novels">
+
+                <hr>
+
+
+
+            </div>
+            <hr>
+        </div>
+        <div class="container">
+
+
+            <div class="row">
+                <div class="text-center col-md-6 col-md-offset-3">
+                    <p>power by mian，所有权利不保留</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    String.prototype.format = function () {
+        var values = arguments;
+        return this.replace(/\{(\d+)\}/g, function (match, index) {
+            if (values.length > index) {
+                return values[index];
+            } else {
+                return "";
+            }
+        });
+    };
+
+    var jmz = {};
+    jmz.GetLength = function (str) {
+        ///<summary>获得字符串实际长度，中文2，英文1</summary>
+        ///<param name="str">要获得长度的字符串</param>
+        var realLength = 0, len = str.length, charCode = -1;
+        for (var i = 0; i < len; i++) {
+            charCode = str.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128)
+                realLength += 1;
+            else
+                realLength += 2;
+        }
+        return realLength;
+    };
+</script>
+<script>
+    const search_t = "1";
+    tpl = `<div class="sResult">
+                    <div class="title"><a href="/novel/{0}}" class="nLink"><strong>{0}</strong></a>
+                        <span>匹配度：{1}</span></div>
+                    <div class="sum">
+                        <ul>
+                            <li class="list-unstyled" id="des1">{2}</li>
+                            <li id="des2">{3}</li>
+                            <li id="des3">{4}</li>
+                            <li id="des4">{5}</li>
+                        </ul>
+                    </div>
+                    <div class="hr"></div>
+                </div>`;
+    $.get("/api/novels/search/"+search_t,function (novels_rate) {
+        if (novels_rate.length === 0) {
+            $("#novels").append(`<div class="sResult">
+                    <div class="title"><strong>无匹配结果</strong>
+                    <div class="hr"></div>
+                </div>`)
+        }
+        for (i in novels_rate) {
+            $.ajaxSettings.async = false;
+            let no_name = novels_rate[i][0];
+            let ra = novels_rate[i][1];
+            $.get("/api/novel/" +no_name,function (no) {
+                let des = no["describe"];
+                $("#novels").append(tpl.format(no_name,ra,des[1],des[2],des[3],des[4]))
+            });
+            $.ajaxSettings.async = true;
+        }
+    })
+</script>
+</html>
