@@ -29,13 +29,11 @@
     </a>
 </nav>
 <div class="container">
-    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
+    <form class="navbar-form navbar searchbar">
         <div class="form-group input-group">
-            <input type="hidden" name="tempid" value="2">
-            <input type="hidden" name="show" value="title,softwriter">
-            <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名">
+            <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名" id="str">
             <span class="input-group-btn">
-            <button class="btn btn-default" type="submit" onclick="search()">搜书</button>
+            <button class="btn btn-default" onclick="search()">搜书</button>
             </span>
         </div>
 
@@ -145,7 +143,7 @@
     };
 
     function search() {
-        open("/search/" + $("#str").text());
+        open("/search/" + $("#str").val());
     }
 
 

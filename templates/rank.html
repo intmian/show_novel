@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>关于 {{ 0 }} 的搜索结果</title>
+    <title>排行榜</title>
     <meta name="description" content="mian's 轻小说站">
     <link href="http://www.iamtxt.com/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://www.iamtxt.com//css/common.css" rel="stylesheet">
@@ -112,10 +112,9 @@
     }
 </script>
 <script>
-    const search_t = "{{ word }}";
     tpl = `<div class="sResult">
                     <div class="title"><a href="/novel/{0}}" class="nLink"><strong>{0}</strong></a>
-                        <span>匹配度：{1}</span></div>
+                        <span>点击：{1}</span></div>
                     <div class="sum">
                         <ul>
                             <li class="list-unstyled" id="des1">{2}</li>
@@ -126,20 +125,14 @@
                     </div>
                     <div class="hr"></div>
                 </div>`;
-    $.get("/api/novels/search/" + search_t, function (novels_rate) {
-        if (novels_rate.length === 0) {
-            $("#novels").append(`<div class="sResult">
-                    <div class="title"><strong>无匹配结果</strong>
-                    <div class="hr"></div>
-                </div>`)
-        }
-        for (i in novels_rate) {
+    $.get("/api/novels/rank", function (novels_gra) {
+        for (i in novels_gra) {
             $.ajaxSettings.async = false;
-            let no_name = novels_rate[i][0];
-            let ra = novels_rate[i][1];
+            let no_name = novels_gra[i][0];
+            let gra = novels_gra[i][1];
             $.get("/api/novel/" + no_name, function (no) {
                 let des = no["describe"];
-                $("#novels").append(tpl.format(no_name, ra, des[1], des[2], des[3], des[4]))
+                $("#novels").append(tpl.format(no_name, gra, des[1], des[2], des[3], des[4]))
             });
             $.ajaxSettings.async = true;
         }

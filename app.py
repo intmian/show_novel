@@ -107,6 +107,11 @@ def search_novel(word):
     return render_template('search.html', word=word)
 
 
+@app.route('/rank', methods=['GET'])
+def rank_novel():
+    return render_template('rank.html')
+
+
 # @app.route('/debug/novel')
 # def novel_debug():
 #     return send_file("static\\html\\detail_debug.html")

@@ -41,13 +41,11 @@
     </a>
 </nav>
 <div class="container">
-    <form class="navbar-form navbar searchbar" action="/search" method="post" role="search">
+    <div class="navbar-form navbar searchbar">
         <div class="form-group input-group">
-            <input type="hidden" name="tempid" value="2">
-            <input type="hidden" name="show" value="title,softwriter">
-            <input type="text" class="form-control searchradios" name="keyboard" placeholder="书名" id="str">
+            <input type="text" class="form-control searchradios" placeholder="书名" id="str">
             <span class="input-group-btn">
-            <button class="btn btn-default" type="submit" onclick="search()">搜书</button>
+            <button class="btn btn-default" onclick="search()">搜书</button>
             </span>
         </div>
 
@@ -55,7 +53,7 @@
             <a href="/" class="searchlinks">书库</a>
             <a href="/rank" class="searchlinks">排行榜</a>
         </div>
-    </form>
+    </div>
     <hr>
 </div>
 <div class="container">
@@ -157,8 +155,9 @@
                                               title="{0}">{0}</a></div>
                 </div>`;
 
-    function search() {
-        open("/search/" + $("#str").text());
+    function search(e) {
+        open("/search/" + $("#str").val());
+        e.stopPropagation()
     }
 
     function set_now() {
