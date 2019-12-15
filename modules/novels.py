@@ -1,3 +1,4 @@
+﻿# -*- coding: UTF-8 -*-
 """
 AUTHOR:   MIAN
 DATE:     2019/12/5
@@ -7,17 +8,17 @@ from sortedcontainers import SortedList
 from typing import *
 from os import listdir, path
 
-base = "static\\novels\\"
+base = "static/novels/"
 
 
 class Novel:
     def __init__(self, name: str):
         self.__name = name
         self.__base = base + name
-        with open(self.__base + "\\书籍信息.txt", "r") as fp:
+        with open(self.__base + "/书籍信息.txt", "r", encoding='ISO-8859-1') as fp:
             self.describe = fp.read()
-        self.cover = self.__base + "\\封面.jpg"
-        addr = self.__base + "\\" + name
+        self.cover = self.__base + "/封面.jpg"
+        addr = self.__base + "/" + name
         self.books = listdir(addr)
 
     def books_addr(self) -> List[str]:
@@ -25,17 +26,17 @@ class Novel:
 返回所有的分卷路径
         :return:
         """
-        return [self.__base + "\\" + self.__name + "\\" + s for s in self.books]
+        return [self.__base + "/" + self.__name + "/" + s for s in self.books]
 
 
 class Novels:
     def __init__(self):
         self.__base = base
         self.novels = listdir(self.__base)
-        self.__rank = SortedList(key = lambda t: -t[1])  # 红黑树
+        self.__rank = SortedList(key=lambda t: -t[1])  # 红黑树
 
         for no in self.novels:
-            self.__rank.add([no,0])
+            self.__rank.add([no, 0])
 
     def novel_valid(self, name) -> bool:
         return name in self.novels
@@ -51,7 +52,7 @@ class Novels:
             if self.__rank[i][0] == novel_:
                 n = self.__rank[i][1] + 1
                 self.__rank.pop(i)
-                self.__rank.add([novel_,n])
+                self.__rank.add([novel_, n])
 
     def novels_popular(self):
         return self.__rank[0:16]
