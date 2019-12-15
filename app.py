@@ -24,20 +24,63 @@ def get_lot_novel():
         nos = loads(data)
     re = []
     for no in nos:
-        if no in novel.novels:
-            n = novel.get_novel(no)
-            if cover:
+        try:
+            if no in novel.novels:
+                n = novel.get_novel(no)
+                if cover:
+                    re.append({
+                        "name": no,
+                        "cover": n.cover
+                    })
+                else:
+                    re.append({
+                        "name": no,
+                        "describe": n.describe.split("\n"),
+                        "cover": n.cover,
+                        "books": n.books
+                    })
+        except:
+            pass
+    return jsonify(re)
+
+
+@app.route('/api/novels/rank/lot')
+def get_lot_rank():
+    re = []
+    nos = novel.novels_rank()
+    for no in nos:
+        try:
+            if no[0] in novel.novels:
+                n = novel.get_novel(no[0])
                 re.append({
-                    "name": no,
-                    "cover": n.cover
-                })
-            else:
-                re.append({
-                    "name": no,
+                    "name": no[0],
+                    "click": no[1],
                     "describe": n.describe.split("\n"),
-                    "cover": n.cover,
-                    "books": n.books
                 })
+        except:  # 有可能会出现爬虫中的空结果，批量接口必须注意
+            pass
+    return jsonify(re)
+
+
+@app.route('/api/novels/search/lot/<name>', methods=['GET'])
+def search_lot(name):
+    re = []
+    nl = len(name)
+    novels = novel.novels
+    for n in novels:
+        if n.find(name) != -1:
+            re.append({
+                "name": n,
+                "rate": round(nl / len(n), 2)
+            })  # 压入匹配程度
+    re.sort(key=lambda x: x["rate"], reverse=True)
+    for r in re:
+        try:
+            if r["name"] in novel.novels:
+                n = novel.get_novel(r["name"])
+                r["describe"] = n.describe.split("\n")
+        except:  # 有可能会出现爬虫中的空结果，批量接口必须注意
+            pass
     return jsonify(re)
 
 

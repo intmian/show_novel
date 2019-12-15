@@ -127,22 +127,13 @@
                     </div>
                     <div class="hr"></div>
                 </div>`;
-    $.get("/api/novels/search/" + search_t, function (novels_rate) {
-        if (novels_rate.length === 0) {
-            $("#novels").append(`<div class="sResult">
-                    <div class="title"><strong>无匹配结果</strong>
-                    <div class="hr"></div>
-                </div>`)
-        }
+    $.get("/api/novels/search/lot/" + search_t, function (novels_rate) {
         for (i in novels_rate) {
-            $.ajaxSettings.async = false;
-            let no_name = novels_rate[i][0];
-            let ra = novels_rate[i][1];
-            $.get("/api/novel/" + no_name, function (no) {
-                let des = no["describe"];
-                $("#novels").append(tpl.format(no_name, ra, des[1], des[2], des[3], des[4]))
-            });
-            $.ajaxSettings.async = true;
+            let nr = novels_rate[i];
+            let name = nr["name"];
+            let rate = nr["rate"];
+            let des = nr["describe"];
+            $("#novels").append(tpl.format(name, rate, des[1], des[2], des[3], des[4]))
         }
     })
 </script>
