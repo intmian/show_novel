@@ -173,14 +173,12 @@
             return;
         $(".n-item").remove();
         $.get("/api/novels?left=" + left + "&right=" + right, function (novels) {
-            $.ajaxSettings.async = false;
             for (n in novels) {
                 let no = novels[n];
                 $.get("/api/novel/{0}?mode=cover".format(no), function (jpg) {
                     $("#novels").append(small_novel_tpl.format(no, "\\" + jpg))
                 })
             }
-            $.ajaxSettings.async = true;
 
         })
 
