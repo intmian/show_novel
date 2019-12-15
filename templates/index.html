@@ -173,13 +173,15 @@
             return;
         $(".n-item").remove();
         $.get("/api/novels?left=" + left + "&right=" + right, function (novels) {
-            for (n in novels) {
-                let no = novels[n];
-                $.get("/api/novel/{0}?mode=cover".format(no), function (jpg) {
-                    $("#novels").append(small_novel_tpl.format(no, "\\" + jpg))
-                })
-            }
+             $.get("/api/novel/lot?mode=cover",{"data":JSON.stringify(novels)}, function (name_jpgs) {
+                    for (i in name_jpgs){
+                        let name_jpg = name_jpgs[i];
+                        no = name_jpg["name"];
+                        jpg = name_jpg["cover"];
+                        $("#novels").append(small_novel_tpl.format(no, "\\" + jpg))
+                    }
 
+                })
         })
 
     }

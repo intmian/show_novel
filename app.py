@@ -5,9 +5,40 @@ from random import sample
 from flask import Flask, send_file, render_template
 from modules.novels import novel
 from flask import request, jsonify
-from json import dumps
+from json import loads
 
 app = Flask(__name__)
+
+
+# 高性能接口们
+@app.route('/api/novel/lot')
+def get_lot_novel():
+    cover = False
+    nos = None
+    args = request.args or None
+    if args:
+        if "mode" in args:
+            if args["mode"] == "cover":
+                cover = True
+        data = args["data"]
+        nos = loads(data)
+    re = []
+    for no in nos:
+        if no in novel.novels:
+            n = novel.get_novel(no)
+            if cover:
+                re.append({
+                    "name": no,
+                    "cover": n.cover
+                })
+            else:
+                re.append({
+                    "name": no,
+                    "describe": n.describe.split("\n"),
+                    "cover": n.cover,
+                    "books": n.books
+                })
+    return jsonify(re)
 
 
 @app.route('/api/novels', methods=['GET'])
@@ -126,4 +157,4 @@ def novel_debug():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)

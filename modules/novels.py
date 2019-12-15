@@ -15,7 +15,7 @@ class Novel:
     def __init__(self, name: str):
         self.__name = name
         self.__base = base + name
-        with open(self.__base + "/书籍信息.txt", "r", encoding='gb2312') as fp:
+        with open(self.__base + "/书籍信息.txt", "r") as fp: # linux 此处应添加gb2312的解码
             self.describe = fp.read()
         self.cover = self.__base + "/封面.jpg"
         addr = self.__base + "/" + name
