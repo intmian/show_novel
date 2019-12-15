@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>关于 {{ 0 }} 的搜索结果</title>
+    <title>搜索结果</title>
     <meta name="description" content="mian's 轻小说站">
     <link href="http://www.iamtxt.com/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://www.iamtxt.com//css/common.css" rel="stylesheet">
@@ -113,6 +113,7 @@
 </script>
 <script>
     const search_t = "{{ word }}";
+    $("#str").val(search_t);
     tpl = `<div class="sResult">
                     <div class="title"><a href="/novel/{0}" class="nLink"><strong>{0}</strong></a>
                         <span>匹配度：{1}</span></div>
