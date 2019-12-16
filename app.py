@@ -126,7 +126,8 @@ def book_download(name, book):
         if book not in n.books:
             return jsonify(None), 404
         else:
-            return send_file("static\\novels\\%s\\%s\\%s" % (name, name, book),
+            return send_file("static/novels/%s/%s/%s" % (name, name, book),
+                             attachment_filename=name + "_" + book,
                              as_attachment=True)
 
 
