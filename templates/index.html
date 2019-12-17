@@ -43,7 +43,10 @@
 <div class="container">
     <div class="navbar-form navbar searchbar">
         <div class="form-group input-group">
-            <input type="text" class="form-control searchradios" placeholder="书名" id="str">
+            <input type="text" class="form-control searchradios" placeholder="书名" id="str"
+                   onkeydown="if(event.keyCode===13) {
+                                search()
+                            }">
             <span class="input-group-btn">
             <button class="btn btn-default" onclick="search()">搜书</button>
             </span>
@@ -84,23 +87,23 @@
 </div>
 <div class="container">
     <div class="row">
-                <div class="text-center">
-                    <div class="pg">
-                        <a href="javascript:firstp();">首页</a>
-                        <a href="javascript:prep();">上一页</a>
-                        <strong id="now1"></strong>
-                        <a href="javascript:nextp();">下一页</a>
-                        <a href="javascript:endp();">末页</a>
-                        <label>
-                            <input
-                                    id="now2"
-                                    type="text"
-                                    class="px"
-                                    size="2"
-                                    onkeydown="
+        <div class="text-center">
+            <div class="pg">
+                <a href="javascript:firstp();">首页</a>
+                <a href="javascript:prep();">上一页</a>
+                <strong id="now1"></strong>
+                <a href="javascript:nextp();">下一页</a>
+                <a href="javascript:endp();">末页</a>
+                <label>
+                    <input
+                            id="now2"
+                            type="text"
+                            class="px"
+                            size="2"
+                            onkeydown="
                             if(event.keyCode===13) {
                                 if (value <= m && value > 0) {
-                                    now=value;
+                                    now=parseInt(value);
                                     set_now();
                                 }
                                 else {
@@ -108,11 +111,11 @@
                                 }
 
                             }">
-                            <span id="max"></span>
-                        </label>
-                    </div>
-                </div>
+                    <span id="max"></span>
+                </label>
             </div>
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="text-center col-md-6 col-md-offset-3">
@@ -162,7 +165,7 @@
 
     function set_now() {
         $("#now1").text(now);
-        $("#now2").attr("value", now);
+        $("#now2").val(now);
         let left = (now - 1) * 20;
         let right = 0;
         if (now * 20 - 1 < novels_num - 1)
@@ -173,15 +176,15 @@
             return;
         $(".n-item").remove();
         $.get("/api/novels?left=" + left + "&right=" + right, function (novels) {
-             $.get("/api/novel/lot?mode=cover",{"data":JSON.stringify(novels)}, function (name_jpgs) {
-                    for (i in name_jpgs){
-                        let name_jpg = name_jpgs[i];
-                        no = name_jpg["name"];
-                        jpg = name_jpg["cover"];
-                        $("#novels").append(small_novel_tpl.format(no, "\\" + jpg))
-                    }
+            $.get("/api/novel/lot?mode=cover", {"data": JSON.stringify(novels)}, function (name_jpgs) {
+                for (i in name_jpgs) {
+                    let name_jpg = name_jpgs[i];
+                    no = name_jpg["name"];
+                    jpg = name_jpg["cover"];
+                    $("#novels").append(small_novel_tpl.format(no, "\\" + jpg))
+                }
 
-                })
+            })
         })
 
     }
